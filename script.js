@@ -2,11 +2,19 @@
 const cells = document.querySelectorAll('.cell');
 const resetButton = document.getElementById('reset-btn');
 const gameStatus = document.getElementById('game-status');
+const xWinsElement = document.getElementById('x-wins');
+const oWinsElement = document.getElementById('o-wins');
 
 // Initialize the game state
 let currentPlayer = 'X';
 let gameEnded = false;
 let board = ['', '', '', '', '', '', '', '', ''];
+let xWins = 0;
+let oWins = 0;
+let startingPlayer = currentPlayer === 'X' ? 'O' : 'X';
+
+
+
 
 // Function to check if the game is over
 function checkGameEnded() {
@@ -50,48 +58,43 @@ function handleCellClick(e) {
             gameStatus.textContent = "It's a tie!";
         } else {
             gameStatus.textContent = `${winner} wins!`;
+            if (winner === 'X') {
+                xWins++;
+                xWinsElement.textContent = xWins;
+            } else {
+                oWins++;
+                oWinsElement.textContent = oWins;
+            }
         }
         gameEnded = true;
-        fireworks();
     } else {
         currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
         gameStatus.textContent = `${currentPlayer}'s turn`;
     }
 }
 
+
+
 // Function to reset the game
 function resetGame() {
-    currentPlayer = 'X';
-    gameEnded = false;
-    board = ['', '', '', '', '', '', '', '', ''];
-    cells.forEach(cell => {
-        cell.textContent = '';
-    });
-    gameStatus.textContent = `${currentPlayer}'s turn`;
-}
-
-// Function to create fireworks
-function fireworks() {
-    const container = document.createElement('div');
-    container.classList.add('fireworks-container');
-    document.body.appendChild(container);
-
-    for (let i = 0; i < 4; i++) {
-        const spark = document.createElement('div');
-        spark.classList.add('firework-spark');
-        container.appendChild(spark);
-    }
-
-    setTimeout(() => {
-        container.remove();
-    }, 2000);
+	console.log('Reset button clicked'); // add this line
+	startingPlayer = startingPlayer === 'X' ? 'O' : 'X';
+	currentPlayer = startingPlayer;
+	gameEnded = false;
+	board = ['', '', '', '', '', '', '', '', ''];
+	cells.forEach(cell => {
+			cell.textContent = '';
+	});
+	gameStatus.textContent = `${currentPlayer}'s turn`;
 }
 
 // Add event listeners to the cells and reset button
 cells.forEach(cell => {
-    cell.addEventListener('click', handleCellClick);
+	cell.addEventListener('click', handleCellClick);
 });
 resetButton.addEventListener('click', resetGame);
 
-// Initialize the game status message
+// Initialize the game status message and scoreboard
 gameStatus.textContent = `${currentPlayer}'s turn`;
+xWinsElement.textContent = xWins;
+oWinsElement.textContent = oWins;

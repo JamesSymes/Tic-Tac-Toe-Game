@@ -1,6 +1,0 @@
-{
-  "extends": "@crashmax/tsconfig",
-  "include": [
-    "src"
-  ]
-}
